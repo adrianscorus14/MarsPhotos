@@ -39,7 +39,7 @@ public class HomeController {
         if(StringUtils.isEmpty(homeDto.getApiRoverData())){
             homeDto.setApiRoverData("Opportunity");
         }
-        ApiResponse roverData= roverService.getAdvancedSearchData(homeDto.getApiRoverData(),homeDto.getMarsSol());
+        ApiResponse roverData= roverService.getAdvancedSearchData(homeDto);
 
         modelMap.put("roverData",roverData);
         modelMap.put("homeDto",homeDto);

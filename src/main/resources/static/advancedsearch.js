@@ -26,14 +26,15 @@ function highLightButton(roverType){
         roverType='Opportunity'
     }
 
-    document.getElementById(roverType).checked=true;
 }
 
 function buttonAction(){
     const roverId=this.id
     document.getElementById('apiRoverData').setAttribute('value',roverId)
-
+ 
 
 }
+
+
 
 

@@ -1,0 +1,63 @@
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <title>MarsPhotos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous"/>
+</head>
+<body>
+
+
+<div class="container">
+    <h2>Welcome to Mars Rover API web application</h2>
+
+
+    <form method="get" action="" id="formRover">
+        <input type="hidden" th:field="${homeDto.apiRoverData}"/>
+        <div class="btn-group bt-group-lg" role="group" aria-label="Basic radio toggle button group" style="margin: 2em 0em">
+            <input type="radio" class="btn-check" name="btnradio" id="curiosity" autocomplete="off">
+            <label class="btn btn-outline-primary" for="curiosity">Curiosity</label>
+
+            <input type="radio" class="btn-check" name="btnradio" id="opportunity" autocomplete="off">
+            <label class="btn btn-outline-primary" for="opportunity">Opportunity</label>
+
+            <input type="radio" class="btn-check" name="btnradio" id="spirit" autocomplete="off">
+            <label class="btn btn-outline-primary" for="spirit">Spirit</label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" th:field="${homeDto.flexCheckDefault}" type="checkbox">
+            <label class="form-check-label" for="flexCheckDefault">
+                Default checkbox
+            </label>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 1em">
+            <label for="marsSol" class="col-form-label col-form-label-lg">Mars sol(Mars day)</label>
+            <input  class="form-control form-control-lg" type="number" th:field="${homeDto.marsSol}" min="1" />
+        </div>
+        <div>
+            <button type="submit" class=" btn btn-primary btn-lg">Submit</button>
+        </div>
+    </form>
+
+
+    <div th:each="index:${#numbers.sequence(0,roverData.photos.size(),4)}" class="row" style="margin-bottom: 2em">
+        <div class="col-sm" th:if="${index<roverData.photos.size}">
+            <img th:src="${roverData.photos[index].imgSrc}" class="img-fluid"/>
+        </div>
+        <div class="col-sm" th:if="${index+1<roverData.photos.size}">
+            <img th:src="${roverData.photos[index+1].imgSrc}" class="img-fluid"/>
+        </div>
+        <div class="col-sm" th:if="${index+2<roverData.photos.size}">
+            <img th:src="${roverData.photos[index+2].imgSrc}" class="img-fluid"/>
+        </div>
+        <div class="col-sm" th:if="${index+3<roverData.photos.size}">
+            <img th:src="${roverData.photos[index+3].imgSrc}" class="img-fluid"/>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="/advancedsearch.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+
+</body>
+</html>

@@ -20,5 +20,4 @@ public class HomeDto {
     private Boolean cameraPancam;
     private Boolean cameraMinites;
 
-
 }

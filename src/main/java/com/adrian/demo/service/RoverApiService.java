@@ -8,13 +8,26 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.*;
 
 @Service
 public class RoverApiService {
 
     private final static String API_KEY="CTuxJjeOnmQyzKCy8KVMqD2Rza6qJJiVKQ6bhFqy";
+
+    private  Map<String, List<String>>  validCameras = new HashMap<>();
+
+    public RoverApiService() {
+        validCameras.put("Opportunity", Arrays.asList("FHAZ", "RHAZ", "NAVCAM", "PANCAM", "MINITES"));
+        validCameras.put("Spirit", Arrays.asList("FHAZ", "RHAZ", "NAVCAM", "PANCAM", "MINITES"));
+        validCameras.put("Curiosity", Arrays.asList("FHAZ", "RHAZ", "NAVCAM", "MARDI", "MAST", "CHEMCAM", "MAHLI"));
+    }
+
+    public Map<String, List<String>> getValidCameras() {
+        return validCameras;
+    }
 
 
 
@@ -34,21 +47,44 @@ public class RoverApiService {
         return response.getBody();
     }
 
-    public ApiResponse getAdvancedSearchData(HomeDto homeDto){
+
+    public ApiResponse getAdvancedSearchData(HomeDto homeDto) throws InvocationTargetException, IllegalAccessException {
 
         RestTemplate restTemplate=new RestTemplate();
-        List<String> apiUrlEndPoints=getUrlEndPoints(homeDto);
-        List<MarsPhotos> photos=new ArrayList<>();
+        List<String> apiUrlEndpoints=getUrlEndPoints(homeDto);
+        List<MarsPhotos> marsPhotos=new ArrayList<>();
         ApiResponse response=new ApiResponse();
-        apiUrlEndPoints.stream().forEach(url ->{
-            ApiResponse apiResponse=restTemplate.getForObject(url,ApiResponse.class);
-            photos.addAll(apiResponse.getPhotos());
-        });
-        response.setPhotos(photos);
+
+        apiUrlEndpoints.stream()
+                .forEach(url ->{
+                    ApiResponse apiResponse=restTemplate.getForObject(url,ApiResponse.class);
+
+                     assert apiResponse != null;
+                     marsPhotos.addAll(apiResponse.getPhotos());
+                });
+        response.setPhotos(marsPhotos);
 
         return response;
 
     }
+
+//    public List<String> getUrlEndPoints(HomeDto homeDto) throws InvocationTargetException, IllegalAccessException {
+//
+//        List<String> urls=new ArrayList<>();
+//
+//        Method[] methods =homeDto.getClass().getMethods();
+//        for(Method method:methods){
+//            if(method.getName().indexOf("getCamera")>-1 && Boolean.TRUE.equals(method.invoke(homeDto))){
+//                String cameraName=method.getName().split("getCamera")[1];
+//                if(validCameras.get(homeDto.getApiRoverData()).contains(cameraName.toUpperCase())){
+//                    urls.add("https://api.nasa.gov/mars-photos/api/v1/rovers/"+homeDto.getApiRoverData()+"/photos?sol="+homeDto.getMarsSol()+"&api_key="+API_KEY+"&camera="+cameraName);
+//                }
+//            }
+//        }
+//        return urls;
+//
+//
+//    }
 
     public List<String> getUrlEndPoints(HomeDto homeDto){
 
@@ -82,6 +118,8 @@ public class RoverApiService {
         }
 
         return urls;
+
+
 
     }
 

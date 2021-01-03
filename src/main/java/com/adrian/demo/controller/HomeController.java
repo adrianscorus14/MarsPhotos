@@ -6,11 +6,14 @@ import com.adrian.demo.response.ApiResponse;
 import com.adrian.demo.service.RoverApiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import org.springframework.web.bind.annotation.RequestParam;
 import org.thymeleaf.util.StringUtils;
+
+import java.lang.reflect.InvocationTargetException;
 
 @Controller
 public class HomeController {
@@ -20,19 +23,19 @@ public class HomeController {
 
 
     @GetMapping("/")
-    public String homePage(ModelMap modelMap,@RequestParam(required = false) String apiRoverData){
+    public String homePage(Model model, @RequestParam(required = false) String apiRoverData){
 
         if(StringUtils.isEmpty(apiRoverData)){
             apiRoverData="Opportunity";
         }
         ApiResponse roverData= roverService.getHomeRoverData(apiRoverData);
-        modelMap.put("roverData",roverData);
+        model.addAttribute("roverData",roverData);
 
         return "index";
     }
 
     @GetMapping("/advancedsearch")
-    public String advancedSearchPage(ModelMap modelMap, HomeDto homeDto)  {
+    public String advancedSearchPage(Model model, HomeDto homeDto) throws InvocationTargetException, IllegalAccessException {
         if(homeDto.getMarsSol()==null){
             homeDto.setMarsSol(1);
         }
@@ -41,8 +44,8 @@ public class HomeController {
         }
         ApiResponse roverData= roverService.getAdvancedSearchData(homeDto);
 
-        modelMap.put("roverData",roverData);
-        modelMap.put("homeDto",homeDto);
+        model.addAttribute("roverData",roverData);
+        model.addAttribute("homeDto",homeDto);
 
         return "advancedsearch";
         

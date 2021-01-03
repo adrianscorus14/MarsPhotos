@@ -31,7 +31,7 @@ function highLightButton(roverType){
 function buttonAction(){
     const roverId=this.id
     document.getElementById('apiRoverData').setAttribute('value',roverId)
- 
+
 
 }
 

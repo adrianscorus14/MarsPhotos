@@ -4,9 +4,13 @@ document.getElementById('opportunity').addEventListener('click',buttonAction)
 
 document.getElementById('spirit').addEventListener('click',buttonAction)
 
+function buttonAction(){
+    const roverId=this.id
+    document.getElementById('apiRoverData').setAttribute('value',roverId)
+
+}
 
 const roverType= getUrlParam("apiRoverData")
-
 highLightButton(roverType)
 
 let marsSol=getUrlParam("marsSol")
@@ -25,15 +29,12 @@ function highLightButton(roverType){
     if(roverType ==''){
         roverType='Opportunity'
     }
-
-}
-
-function buttonAction(){
-    const roverId=this.id
-    document.getElementById('apiRoverData').setAttribute('value',roverId)
+    document.getElementById(roverType).checked=true
 
 
 }
+
+
 
 
 
